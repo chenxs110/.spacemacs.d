@@ -32,6 +32,7 @@
         docker
         dockerfile-mode
         emacs-lisp
+        org
         ))
 
 ;; List of packages to exclude.
@@ -56,7 +57,8 @@
   (add-to-list 'ycmd-server-command (expand-file-name "~/emacs/ycmd/ycmd/__main__.py") t)
   (set-variable 'ycmd-global-config "/Users/chenxuesong/emacs/ycmd/cpp/ycm/.ycm_extra_conf.py")
   (set-variable 'ycmd-extra-conf-whitelist '("~/Work/project/artisan-cocoslib/*"
-                                             "/Users/chenxuesong/Work/project/gamesdk/cocos2d-x-3.8/artisan/Artisan/cocos2d/external/artisan-cocoslib/*"))
+                                             "/Users/chenxuesong/Work/project/gamesdk/cocos2d-x-3.8/artisan/Artisan/cocos2d/external/artisan-cocoslib/*"
+                                             "/Volumes/android/Finchos-2016-0322/android-5.0.2/device/friendly-arm/tiny4412/fingerprint"))
   (setq company-backends-c-mode-common '((company-c-headers
                                           company-dabbrev-code
                                           company-keywords
@@ -321,7 +323,7 @@
   (add-to-list 'evil-emacs-state-modes 'docker-volumes-mode)
   (add-to-list 'evil-emacs-state-modes 'docker-networks-mode)
   (add-to-list 'evil-emacs-state-modes 'docker-machines-mode)
- )
+  )
 
 (defun chenxuesong/init-docker-tramp ()
   (use-package docker-tramp
@@ -330,6 +332,21 @@
     (progn
       )
     )
+  )
+
+(defun chenxuesong/post-init-org ()
+  (add-hook 'org-pomodoro-finished-hook
+            (lambda ()
+              (notify-osx "Pomodoro completed!" "Time for a break.")))
+  (add-hook 'org-pomodoro-break-finished-hook
+            (lambda ()
+              (notify-osx "Pomodoro Short Break Finished" "Ready for Another?")))
+  (add-hook 'org-pomodoro-long-break-finished-hook
+            (lambda ()
+              (notify-osx "Pomodoro Long Break Finished" "Ready for Another?")))
+  (add-hook 'org-pomodoro-killed-hook
+            (lambda ()
+              (notify-osx "Pomodoro Killed" "One does not simply kill a pomodoro!")))
   )
 
 (defun chenxuesong/post-init-dockerfile-mode ()

@@ -108,7 +108,7 @@ before layers configuration."
    ;; "Noto Sans Mono CJK SC"
    ;; "DejaVu Sans Mono-12"
    dotspacemacs-default-font
-   '("DejaVu Sans Mono-12" :size 12
+   '("Noto Sans Mono CJK SC" :size 12
      :weight normal
      :width normal
      :powerline-scale 1.1)
@@ -252,7 +252,7 @@ layers configuration."
                                  (plantuml . t)))
   (setq org-plantuml-jar-path (expand-file-name "~/org/contrib/scripts/plantuml.jar"))
   (setq org-ditaa-jar-path (expand-file-name "~/org/contrib/scripts/ditaa.jar"))
-  (setq org-agenda-files (list "~/org/work.org" "~/org/study.org" "~/org/home.org"))
+  (setq org-agenda-files (list "~/org/work.org" "~/org/study.org" "~/org/home.org" "~/org/notes.org"))
   (defun eh-org-clean-space (text backend info)
     (when (org-export-derived-backend-p backend 'html)
       (let ((regexp "[[:multibyte:]]")
@@ -276,7 +276,8 @@ layers configuration."
   ;;show me tasks scheduled or due in next fortnight
   (setq org-agenda-span (quote fortnight))
   ;;don't show tasks as scheduled if they are already shown as a deadline
-  ;; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (setq org-agenda-skip-deadline-if-done t)
   ;;don't give awarning colour to tasks with impending deadlines
   ;;if they are scheduled to be done
   (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
@@ -302,38 +303,69 @@ layers configuration."
                       charset
                       (font-spec :family "Noto Sans Mono CJK SC"
                                  :size 14)))
-  (setq org-capture-templates '(("d" "Daily Task"
+  (setq org-capture-templates '(("t" "Tasks"
                                  entry
-                                 (file+headline "~/org/work.org" "DAILY WORK")
-                                 "** TODO %U - %^{description} %^g\n %?")
-                                ("w" "Weekly Task"
+                                 (file+headline "~/org/work.org" "Tasks")
+                                 "** TODO %^{description} %^g\n %?")
+                                ("n" "Notes"
                                  entry
-                                 (file+headline "~/org/work.org" "WEEKLY WORK")
-                                 "** TODO %U - %^{description} %^g\n %?")
-                                ("m" "Month Task"
+                                 (file+headline "~/org/work.org" "Notes")
+                                 "** %^{description} %^g\n %?")
+                                ("d" "Ideas"
                                  entry
-                                 (file+headline "~/org/work.org" "MONTHLY WORK")
-                                 "** TODO %U - %^{description} %^g\n %?")
-                                ("y" "Year Task"
+                                 (file+headline "~/org/work.org" "Ideas")
+                                 "** TODO %^{description} %^g\n %?")
+                                ("i" "Inbox"
                                  entry
-                                 (file+headline "~/org/work.org" "ANNUALLY WORK")
-                                 "** TODO %U - %^{description} %^g\n %?")
+                                 (file+headline "~/org/work.org" "Inbox")
+                                 "** TODO %^{description} %^g\n %?")
                                 ("h" "Home"
                                  entry
                                  (file+headline "~/org/home.org" "HOME EVENT")
-                                 "** TODO %U - %^{description} %^g\n %?")
+                                 "** TODO %^{description} %^g\n %?")
                                 ("r" "Reading"
                                  entry
                                  (file+headline "~/org/study.org" "READING BOOK")
-                                 "** TODO %U - %^{description} %^g\n %?")
+                                 "** TODO %^{description} %^g\n %?")
                                 ("e" "Emacs"
                                  entry
                                  (file+headline "~/org/study.org" "EMACS")
-                                 "** TODO %U - %^{description} %^g\n %?")
+                                 "** TODO %^{description} %^g\n %?")
                                 ("l" "Learn"
                                  entry
                                  (file+headline "~/org/study.org" "LEARN")
-                                 "** TODO %U - %^{description} %^g\n %?")))
+                                 "** TODO %^{description} %^g\n %?")))
+
+  (setq org-agenda-custom-commands
+        '(
+          ("C" "Clock View" agenda ""
+           ((org-columns-default-format "%SCHEDULED %8EFFORT %8CLOCKSUM %PRIORITY %50ITEM")
+            (org-agenda-view-columns-initially t)))
+          ("W" "Weekly Review"
+           ((agenda "" ((org-agenda-ndays 7)))
+            )) ;; review waiting items 
+          ))
+
+  (setq org-refile-targets (quote ((nil :maxlevel . 2)
+                                   (org-agenda-files :maxlevel . 2))))
+  (setq org-tag-alist (quote ((:startgroup)
+                              ("@errand" . ?E)
+                              ("@office" . ?O)
+                              ("@home" . ?H)
+                              ("@farm" . ?F)
+                              (:endgroup)
+                              ("PERSONAL" . ?p)
+                              ("ORG" . ?o)
+                              ("ANALYSIS" . ?a)
+                              ("TRACKING" . ?t)
+                              ("NINJA" . ?n)
+                              ("EMACS". ?e)
+                              ("GEEK" .?g)
+                              ("DEVOPS" . ?d)
+                              ("REACT" . ?r)
+                              ("FINCHOS" .?f)
+                              )))
+
   (setq company-idle-delay 0.4)
   (let ((map company-active-map))
     (define-key map (kbd "C-/") 'company-search-candidates)
