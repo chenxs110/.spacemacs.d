@@ -28,20 +28,21 @@
   (interactive "sWhich review your want again? ")
   (let ((default-directory (concat (magit-git-dir)
                                    "/../")) output)
-    (async-start (lambda ()
-                   (message "start review")
-                   (setq output (shell-command-to-string (concat "rbt post -r" review-id)))
-                   (if (string-match "http://.+" output)
-                       (substring output
-                                  (match-beginning 0)
-                                  (match-end 0))
-                     nil))
-                 (lambda (result)
-                   (if result
-                       (progn
-                         (message result)
-                         (browse-url result))
-                     (message "result error %s" result))))))
+    (async-start
+     `(lambda ()
+        (message "start review")
+        (setq output (shell-command-to-string (concat "rbt post -r" ,review-id)))
+        (if (string-match "http://.+" output)
+            (substring output
+                       (match-beginning 0)
+                       (match-end 0))
+          nil))
+     (lambda (result)
+       (if result
+           (progn
+             (message result)
+             (browse-url result))
+         (message "result error %s" result))))))
 
 (defun chenxuesong-start-emacs-client ()
   (interactive)
@@ -110,10 +111,27 @@
   (message "chenxuesong"))
 
 (defun notify-osx (title message)
-	(call-process "terminal-notifier"
+  (call-process "terminal-notifier"
                 nil 0 nil
                 "-group" "Emacs"
                 "-title" title
                 "-sender" "org.gnu.Emacs"
                 "-message" message
                 "-activate" "oeg.gnu.Emacs"))
+
+(defun my-fundamental-face ()
+  "Set font to a variable width (proportional) fonts in current buffer"
+  (interactive)
+  (setq buffer-face-mode-face '(:family "DejaVu Sans Mono" :height 100 :width semi-condensed))
+  (buffer-face-mode))
+
+(defun chenxuesong-indent-org-block-cmd ()
+  (interactive)
+  (chenxuesong-indent-org-block-automatically))
+
+(defun chenxuesong-indent-org-block-automatically ()
+  (when (org-in-src-block-p)
+    (org-edit-special)
+    (indent-region (point-min) (point-max))
+    (org-edit-src-exit)))
+

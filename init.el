@@ -39,6 +39,7 @@
          gtags
          elfeed
          ycmd
+         yaml
          osx
          ranger
          xkcd
@@ -197,6 +198,7 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+  (set-default-coding-systems 'utf-8)
   (setq paradox-github-token "6058a83cdf6dd9ee0db5ba4a16c6cd1201048bd7")
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   (global-company-mode)
@@ -218,7 +220,7 @@ layers configuration."
   (spacemacs|define-custom-layout "ewwxahlee"
     :binding "x"
     :body (eww-open-file "~/Work/Emacs/Document/xahemacs20150606/xah_emacs_tutorial/index.html"))
- 
+
   (with-eval-after-load 'web-mode
     ;;(setq-default
      ;; js2-mode js2-basic-offset 2
@@ -252,23 +254,8 @@ layers configuration."
                                  (plantuml . t)))
   (setq org-plantuml-jar-path (expand-file-name "~/org/contrib/scripts/plantuml.jar"))
   (setq org-ditaa-jar-path (expand-file-name "~/org/contrib/scripts/ditaa.jar"))
-  (setq org-agenda-files (list "~/org/work.org" "~/org/study.org" "~/org/home.org" "~/org/notes.org"))
-  (defun eh-org-clean-space (text backend info)
-    (when (org-export-derived-backend-p backend 'html)
-      (let ((regexp "[[:multibyte:]]")
-            (string text))
-        (setq string (replace-regexp-in-string (format "\\(%s\\) *\n *\\(%s\\)" regexp regexp)
-                                               "\\1\\2"
-                                               string))
-        (setq string (replace-regexp-in-string (format "\\(%s\\) +\\(<\\)" regexp)
-                                               "\\1\\2"
-                                               string))
-        (setq string (replace-regexp-in-string (format "\\(>\\) +\\(%s\\)" regexp)
-                                               "\\1\\2"
-                                               string))
-        string)))
-  (add-to-list 'org-export-filter-paragraph-functions
-               'eh-org-clean-space)
+  (setq org-agenda-files '("~/org"))
+  ;; (setq org-agenda-files (list "~/org/work.org" "~/org/study.org" "~/org/home.org" "~/org/notes.org"))
   ;;open agenda in current window
   (setq org-agenda-window-setup (quote current-window))
   ;;warn me of any deadlines in next 7 days
@@ -343,7 +330,7 @@ layers configuration."
             (org-agenda-view-columns-initially t)))
           ("W" "Weekly Review"
            ((agenda "" ((org-agenda-ndays 7)))
-            )) ;; review waiting items 
+            )) ;; review waiting items
           ))
 
   (setq org-refile-targets (quote ((nil :maxlevel . 2)
@@ -391,6 +378,13 @@ layers configuration."
   (define-key evil-visual-state-map "\C-w" 'evil-delete)
   (spacemacs/toggle-menu-bar)
   (spacemacs/toggle-maximize-frame)
+  ;; (add-hook 'fundamental-mode-hook (lambda ()
+  ;;                                    (setq buffer-face-mode-face '(:family "DejaVu Sans Mono" :height 100 :width semi-condensed))
+  ;;                                    (buffer-face-mode)
+  ;;                                    ))
+  (add-hook 'spacemacs-buffer-mode-hook (lambda ()
+                                          (setq buffer-face-mode-face '(:family "DejaVu Sans Mono" :height 120 :width semi-condensed))
+                                          (buffer-face-mode)))
   (add-hook 'c++-mode-hook
             (lambda ()
               (add-to-list 'company-c-headers-path-system
@@ -414,7 +408,7 @@ layers configuration."
  '(ahs-inhibit-face-list nil)
  '(cfs--current-profile-name "program" t)
  '(geiser-active-implementations (quote (chicken)))
- '(org-export-backends (quote (ascii html icalendar latex md)))
+ '(org-export-backends (quote (ascii html icalendar latex md confluence)))
  '(paradox-automatically-star t)
  '(ring-bell-function (quote ignore)
                       t)

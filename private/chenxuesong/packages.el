@@ -33,6 +33,8 @@
         dockerfile-mode
         emacs-lisp
         org
+        wttrin
+        (ox-confluence-export :location local)
         ))
 
 ;; List of packages to exclude.
@@ -73,15 +75,15 @@
 (defun chenxuesong/post-init-magit()
   (with-eval-after-load 'magit-popup
     (magit-define-popup-action 'magit-commit-popup
-                               ?r "Rbt post -g" 'chenxuesong-review-code-post-g)
+      ?r "Rbt post -g" 'chenxuesong-review-code-post-g)
     (magit-define-popup-action 'magit-commit-popup
-                               ?R "Rbt post -r" 'chenxuesong-review-code-post-r)
+      ?R "Rbt post -r" 'chenxuesong-review-code-post-r)
     (magit-define-popup-action 'magit-commit-popup
-                               ?o "Rbt open" 'chenxuesong-review-code-open)
+      ?o "Rbt open" 'chenxuesong-review-code-open)
     (magit-define-popup-action 'magit-commit-popup
-                               ?d "Rbt diff" 'chenxuesong-review-code-diff)
+      ?d "Rbt diff" 'chenxuesong-review-code-diff)
     (magit-define-popup-action 'magit-commit-popup
-                               ?D "Delete .Ds_Store" 'chenxuesong-delete-ds-store)
+      ?D "Delete .Ds_Store" 'chenxuesong-delete-ds-store)
     )
   )
 
@@ -143,11 +145,20 @@
       (keyfreq-mode t)
       (keyfreq-autosave-mode 1))))
 
+(defun chenxuesong/init-wttrin ()
+  (use-package wttrin
+    :ensure t
+    :commands (wttrin)
+    :init
+    (setq wttrin-default-cities '("Chengdu"
+                                  "Chongqing"))))
+
 (defun chenxuesong/init-org-octopress ()
   (use-package org-octopress
+    :commands (org-octopress org-octopress-setup-publish-project)
     :init
     (progn
-      ;;(evilified-state-evilify org-octopress-summary-mode org-octopress-summary-mode-map)
+      (evilified-state-evilify org-octopress-summary-mode org-octopress-summary-mode-map)
       (add-hook 'org-octopress-summary-mode-hook
                 #'(lambda () (local-set-key (kbd "q") 'bury-buffer)))
       (setq org-blog-dir "~/Work/blog/")
@@ -195,6 +206,7 @@
             ;; ("http://feeds.feedburner.com/ruanyifeng" dev blog)
             ("http://blog.devtang.com/atom.xml" dev blog)
             ("http://emacsist.com/rss" emacs)
+            ("http://pragmaticemacs.com/feed/" emacs)
             ;; ("http://puntoblogspot.blogspot.com/feeds/2507074905876002529/comments/default" dev)
             ("http://xahlee.info/comp/blog.xml" emacs blog)
             ("http://www.matrix67.com/blog/feed" dev blog)
@@ -335,6 +347,40 @@
   )
 
 (defun chenxuesong/post-init-org ()
+  ;; (defun eh-org-clean-space (text backend info)
+  ;;   (when (org-export-derived-backend-p backend 'html)
+  ;;     (let ((regexp "[[:multibyte:]]")
+  ;;           (string text))
+  ;;       (setq string (replace-regexp-in-string (format "\\(%s\\) *\n *\\(%s\\)" regexp regexp)
+  ;;                                              "\\1\\2"
+  ;;                                              string))
+  ;;       (setq string (replace-regexp-in-string (format "\\(%s\\) +\\(<\\)" regexp)
+  ;;                                              "\\1\\2"
+  ;;                                              string))
+  ;;       (setq string (replace-regexp-in-string (format "\\(>\\) +\\(%s\\)" regexp)
+  ;;                                              "\\1\\2"
+  ;;                                              string))
+  ;;       string)))
+  ;; (add-to-list 'org-export-filter-paragraph-functions
+  ;;              'eh-org-clean-space)
+
+  ;;(run-at-time 1 10 'chenxuesong-indent-org-block-automatically)
+
+  (defun clear-single-linebreak-in-cjk-string (string)
+    "clear single line-break between cjk characters that is usually soft line-breaks"
+    (let* ((regexp "\\([\u4E00-\u9FA5]\\)\n\\([\u4E00-\u9FA5]\\)")
+           (start (string-match regexp string)))
+      (while start
+        (setq string (replace-match "\\1\\2" nil nil string)
+              start (string-match regexp string start))))
+    string)
+
+  (defun ox-html-clear-single-linebreak-for-cjk (string backend info)
+    (when (org-export-derived-backend-p backend 'html)
+      (clear-single-linebreak-in-cjk-string string)))
+
+  ;; (add-to-list 'org-export-filter-final-output-functions
+  ;;              'ox-html-clear-single-linebreak-for-cjk)
   (add-hook 'org-pomodoro-finished-hook
             (lambda ()
               (notify-osx "Pomodoro completed!" "Time for a break.")))
@@ -352,6 +398,13 @@
 (defun chenxuesong/post-init-dockerfile-mode ()
   (with-eval-after-load 'dockerfile-mode (evil-leader/set-key-for-mode
                                            'dockerfile-mode "cn" 'chenxuesong-set-image-name)))
+
+;; (defun chenxuesong/init-ox-confluence-export ()
+;;   (use-package ox-confluence-export
+;;     :load-path "/Users/chenxuesong/.spacemacs.d/private/chenxuesong/local/"))
+
+(defun chenxuesong/init-ox-confluence-export ()
+   (use-package ox-confluence-export))
 
 
 ;; For each package, define a function chenxuesong/init-<package-name>
