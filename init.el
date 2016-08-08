@@ -47,6 +47,7 @@
          dockerfile
          shell-scripts
          spell-checking
+         search-engine
          (auto-completion :variables auto-completion-enable-snippets-in-popup
                           t)
          (python :variables python-enable-yapf-format-on-save
@@ -235,6 +236,10 @@ layers configuration."
     (add-to-list 'web-mode-indentation-params
                  '("lineup-calls" . nil)))
 
+  (setq browse-url-browser-function 'browse-url-default-macosx-browser)
+  (push '(baidu :name "Baidu"
+                :url "https://www.baidu.com/s?wd=%s")
+        search-engine-alist)
 
   (setq ranger-parent-depth 2)
   ;; set osx dictionary key binding

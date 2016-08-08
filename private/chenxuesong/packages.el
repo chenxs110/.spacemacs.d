@@ -75,15 +75,15 @@
 (defun chenxuesong/post-init-magit()
   (with-eval-after-load 'magit-popup
     (magit-define-popup-action 'magit-commit-popup
-      ?r "Rbt post -g" 'chenxuesong-review-code-post-g)
+                               ?r "Rbt post -g" 'chenxuesong-review-code-post-g)
     (magit-define-popup-action 'magit-commit-popup
-      ?R "Rbt post -r" 'chenxuesong-review-code-post-r)
+                               ?R "Rbt post -r" 'chenxuesong-review-code-post-r)
     (magit-define-popup-action 'magit-commit-popup
-      ?o "Rbt open" 'chenxuesong-review-code-open)
+                               ?o "Rbt open" 'chenxuesong-review-code-open)
     (magit-define-popup-action 'magit-commit-popup
-      ?d "Rbt diff" 'chenxuesong-review-code-diff)
+                               ?d "Rbt diff" 'chenxuesong-review-code-diff)
     (magit-define-popup-action 'magit-commit-popup
-      ?D "Delete .Ds_Store" 'chenxuesong-delete-ds-store)
+                               ?D "Delete .Ds_Store" 'chenxuesong-delete-ds-store)
     )
   )
 
@@ -404,8 +404,7 @@
 ;;     :load-path "/Users/chenxuesong/.spacemacs.d/private/chenxuesong/local/"))
 
 (defun chenxuesong/init-ox-confluence-export ()
-   (use-package ox-confluence-export))
-
+  (use-package ox-confluence-export))
 
 ;; For each package, define a function chenxuesong/init-<package-name>
 ;;
