@@ -22,41 +22,43 @@
      ;; markdown
      ;; org
      ;; syntax-checking
-     org markdown
-         javascript
-         syntax-checking
-         ;; perspectives
-         semantic
-         ;; (colors :variables
-         ;;         colors-enable-nyan-cat-progress-bar t)
-         (c-c++ :variables c-c++-default-mode-for-headers'c++-mode
-                :variables c-c++-enable-clang-support
-                t)
-         scheme
-         emacs-lisp
-         html
-         deft
-         gtags
-         elfeed
-         ycmd
-         yaml
-         osx
-         ranger
-         xkcd
-         react
-         dockerfile
-         shell-scripts
-         spell-checking
-         search-engine
-         (auto-completion :variables auto-completion-enable-snippets-in-popup
-                          t)
-         (python :variables python-enable-yapf-format-on-save
-                 t python-test-runner 'pytest)
-         (git :variables git-magit-status-fullscreen
-              t)
-         (shell :variables shell-default-shell'ansi-term
-                shell-default-term-shell "/bin/zsh")
-         chenxuesong)
+     org
+     markdown
+     javascript
+     syntax-checking
+     ;; perspectives
+     semantic
+     ;; (colors :variables
+     ;;         colors-enable-nyan-cat-progress-bar t)
+     (c-c++ :variables c-c++-default-mode-for-headers'c++-mode
+            :variables c-c++-enable-clang-support
+            t)
+     scheme
+     emacs-lisp
+     html
+     deft
+     gtags
+     elfeed
+     ycmd
+     yaml
+     osx
+     ranger
+     xkcd
+     react
+     fasd
+     dockerfile
+     shell-scripts
+     spell-checking
+     search-engine
+     (auto-completion :variables auto-completion-enable-snippets-in-popup
+                      t)
+     (python :variables python-enable-yapf-format-on-save
+             t python-test-runner 'pytest)
+     (git :variables git-magit-status-fullscreen
+          t)
+     (shell :variables shell-default-shell'ansi-term
+            shell-default-term-shell "/bin/zsh")
+     chenxuesong)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-additional-packages
    '(osx-dictionary chinese-fonts-setup)
@@ -193,6 +195,10 @@ before layers configuration."
    dotspacemacs-default-package-repository
    nil)
   ;; User initialization goes here
+  (setq configuration-layer--elpa-archives
+        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "http://elpa.emacs-china.org/org/")
+          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
   )
 
 (defun dotspacemacs/user-config ()
@@ -331,7 +337,7 @@ layers configuration."
   (setq org-agenda-custom-commands
         '(
           ("C" "Clock View" agenda ""
-           ((org-columns-default-format "%SCHEDULED %8EFFORT %8CLOCKSUM %PRIORITY %50ITEM")
+           ((org-columns-default-format "%SCHEDULED %8EFFORT %8CLOCKSUM_T %PRIORITY %50ITEM")
             (org-agenda-view-columns-initially t)))
           ("W" "Weekly Review"
            ((agenda "" ((org-agenda-ndays 7)))
@@ -356,6 +362,7 @@ layers configuration."
                               ("DEVOPS" . ?d)
                               ("REACT" . ?r)
                               ("FINCHOS" .?f)
+                              ("ALGORITHM" .?s)
                               )))
 
   (setq company-idle-delay 0.4)
@@ -413,7 +420,7 @@ layers configuration."
  '(ahs-inhibit-face-list nil)
  '(cfs--current-profile-name "program" t)
  '(geiser-active-implementations (quote (chicken)))
- '(org-export-backends (quote (ascii html icalendar latex md confluence)))
+ '(org-export-backends (quote (ascii html icalendar latex md confluence freemind)))
  '(paradox-automatically-star t)
  '(ring-bell-function (quote ignore)
                       t)

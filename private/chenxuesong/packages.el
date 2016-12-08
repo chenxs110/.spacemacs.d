@@ -35,6 +35,7 @@
         org
         wttrin
         (ox-confluence-export :location local)
+        (ox-opml :location local)
         ))
 
 ;; List of packages to exclude.
@@ -405,6 +406,9 @@
 
 (defun chenxuesong/init-ox-confluence-export ()
   (use-package ox-confluence-export))
+
+(defun chenxuesong/init-ox-opml ()
+  (use-package ox-opml))
 
 ;; For each package, define a function chenxuesong/init-<package-name>
 ;;

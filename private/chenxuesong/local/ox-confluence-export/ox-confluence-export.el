@@ -39,7 +39,7 @@
 ;; Define the backend itself
 (org-export-define-derived-backend 'confluence 'ascii
   :menu-entry
-  '(?f "Export to Confluence" org-confluence-export-as-confluence)
+  '(?u "Export to Confluence" org-confluence-export-as-confluence)
   :translate-alist '((bold . org-confluence-bold)
 		     (example-block . org-confluence-example-block)
 		     (fixed-width . org-confluence-fixed-width)
