@@ -199,6 +199,7 @@ before layers configuration."
         '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
           ("org-cn"   . "http://elpa.emacs-china.org/org/")
           ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+  (set-variable 'ycmd-server-command '("python" "/Users/chenxuesong/emacs/ycmd/ycmd/"))
   )
 
 (defun dotspacemacs/user-config ()
@@ -308,15 +309,15 @@ layers configuration."
                                 ("n" "Notes"
                                  entry
                                  (file+headline "~/org/work.org" "Notes")
-                                 "** %^{description} %^g\n %?")
+                                 "** %t %^{description} %^g\n %?")
                                 ("d" "Ideas"
                                  entry
                                  (file+headline "~/org/work.org" "Ideas")
-                                 "** TODO %^{description} %^g\n %?")
+                                 "** %t %^{description} %^g\n %?")
                                 ("i" "Inbox"
                                  entry
                                  (file+headline "~/org/work.org" "Inbox")
-                                 "** TODO %^{description} %^g\n %?")
+                                 "** %t %^{description} %^g\n %?")
                                 ("h" "Home"
                                  entry
                                  (file+headline "~/org/home.org" "HOME EVENT")
@@ -363,6 +364,7 @@ layers configuration."
                               ("REACT" . ?r)
                               ("FINCHOS" .?f)
                               ("ALGORITHM" .?s)
+                              ("SECURITY" .?S)
                               )))
 
   (setq company-idle-delay 0.4)

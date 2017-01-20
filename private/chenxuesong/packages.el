@@ -56,8 +56,8 @@
 ;;       )))
 
 (defun chenxuesong/post-init-ycmd()
-  (set-variable 'ycmd-server-command '("python"))
-  (add-to-list 'ycmd-server-command (expand-file-name "~/emacs/ycmd/ycmd/__main__.py") t)
+  ;;(set-variable 'ycmd-server-command '("python"))
+  ;;(add-to-list 'ycmd-server-command (expand-file-name "/Users/chenxuesong/emacs/ycmd/") t)
   (set-variable 'ycmd-global-config "/Users/chenxuesong/emacs/ycmd/cpp/ycm/.ycm_extra_conf.py")
   (set-variable 'ycmd-extra-conf-whitelist '("~/Work/project/artisan-cocoslib/*"
                                              "/Users/chenxuesong/Work/project/gamesdk/cocos2d-x-3.8/artisan/Artisan/cocos2d/external/artisan-cocoslib/*"
@@ -229,13 +229,23 @@
             ("http://feeds.feedburner.com/hacker-news-feed-200" news)
             ("https://news.ycombinator.com/rss" news)
             ("http://github-trends.ryotarai.info/rss/github_trends_all_daily.rss" dev)
-            ("http://github-trends.ryotarai.info/rss/github_trends_all_weekly.rss" dev)
+            ;; ("http://github-trends.ryotarai.info/rss/github_trends_all_weekly.rss" dev)
             ("http://github-trends.ryotarai.info/rss/github_trends_all_monthly.rss" dev)
+            ("https://www.sec-wiki.com/news/rss" sec)
+            ("https://www.cvedetails.com/vulnerability-feed.php?vendor_id=0&product_id=0&version_id=0&orderby=3&cvssscoremin=4" sec)
             ;; ("http://www.reactnative.com/rss/" dev)
             )
           )
 
     ;; (evilify elfeed-search-mode elfeed-search-mode-map)
+
+    (defface elfeed-sec
+      '((t :foreground "#90EE90"))
+      "Marks Sec in Elfeed."
+      :group 'elfeed)
+
+    (push '(sec elfeed-sec)
+          elfeed-search-face-alist)
 
     (defface elfeed-emacs
       '((t :foreground "#8470FF"))
@@ -277,7 +287,7 @@
     (push '(unread elfeed-unread)
           elfeed-search-face-alist)
 
-    (setq-default elfeed-search-filter "@2-months-ago +unread ")
+    (setq-default elfeed-search-filter "@1-week-ago +unread ")
 
     (defun elfeed-export-link ()
       (interactive)
