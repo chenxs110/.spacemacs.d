@@ -135,3 +135,17 @@
     (indent-region (point-min) (point-max))
     (org-edit-src-exit)))
 
+(defun chenxuesong-replace-punctuation ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (search-forward "，" nil t)
+      (replace-match ","))
+    (goto-char (point-min))
+    (while (search-forward "。" nil t)
+      (replace-match "."))
+    (goto-char (point-min))
+    (while (search-forward "、" nil t)
+      (replace-match ","))
+    )
+  )

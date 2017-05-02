@@ -35,6 +35,7 @@
             t)
      scheme
      emacs-lisp
+     common-lisp
      html
      deft
      gtags
@@ -266,7 +267,7 @@ layers configuration."
                                  (plantuml . t)))
   (setq org-plantuml-jar-path (expand-file-name "~/org/contrib/scripts/plantuml.jar"))
   (setq org-ditaa-jar-path (expand-file-name "~/org/contrib/scripts/ditaa.jar"))
-  (setq org-agenda-files '("~/org"))
+  (setq org-agenda-files (list "~/org" "~/Work/360/Project"))
   ;; (setq org-agenda-files (list "~/org/work.org" "~/org/study.org" "~/org/home.org" "~/org/notes.org"))
   ;;open agenda in current window
   (setq org-agenda-window-setup (quote current-window))
@@ -310,6 +311,10 @@ layers configuration."
                                  entry
                                  (file+headline "~/org/work.org" "Notes")
                                  "** %t %^{description} %^g\n %?")
+                                ("q" "Assessment"
+                                 entry
+                                 (file+headline "~/Work/360/Project/qihoo.org" "Safety Assessment")
+                                 "** TODO %t %^{description} %^g\n %?")
                                 ("d" "Ideas"
                                  entry
                                  (file+headline "~/org/work.org" "Ideas")
@@ -365,6 +370,7 @@ layers configuration."
                               ("FINCHOS" .?f)
                               ("ALGORITHM" .?s)
                               ("SECURITY" .?S)
+                              ("360" .?q)
                               )))
 
   (setq company-idle-delay 0.4)
