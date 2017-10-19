@@ -107,27 +107,12 @@
                                                     default-directory))))))
 
 
-(defun chenxuesong-print ()
-  (message "chenxuesong"))
+;; (defun my-fundamental-face ()
+;;   "Set font to a variable width (proportional) fonts in current buffer"
+;;   (interactive)
+;;   (setq buffer-face-mode-face '(:family "DejaVu Sans Mono" :height 100 :width semi-condensed))
+;;   (buffer-face-mode))
 
-(defun notify-osx (title message)
-  (call-process "terminal-notifier"
-                nil 0 nil
-                "-group" "Emacs"
-                "-title" title
-                "-sender" "org.gnu.Emacs"
-                "-message" message
-                "-activate" "oeg.gnu.Emacs"))
-
-(defun my-fundamental-face ()
-  "Set font to a variable width (proportional) fonts in current buffer"
-  (interactive)
-  (setq buffer-face-mode-face '(:family "DejaVu Sans Mono" :height 100 :width semi-condensed))
-  (buffer-face-mode))
-
-(defun chenxuesong-indent-org-block-cmd ()
-  (interactive)
-  (chenxuesong-indent-org-block-automatically))
 
 (defun chenxuesong-indent-org-block-automatically ()
   (when (org-in-src-block-p)
@@ -149,3 +134,16 @@
       (replace-match ","))
     )
   )
+
+(defun chenxuesong-indent-org-block-cmd ()
+  (interactive)
+  (chenxuesong-indent-org-block-automatically))
+
+(defun notify-osx (title message)
+  (call-process "terminal-notifier"
+                nil 0 nil
+                "-group" "Emacs"
+                "-title" title
+                "-sender" "org.gnu.Emacs"
+                "-message" message
+                "-activate" "oeg.gnu.Emacs"))

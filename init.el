@@ -47,10 +47,18 @@
      xkcd
      react
      fasd
-     dockerfile
      shell-scripts
      spell-checking
      search-engine
+     chenxuesong
+     (mu4e :variables
+           mu4e-installation-path "/usr/local/Cellar/mu/mu4e"
+           mu4e-enable-mode-line t
+           mu4e-enable-notifications t
+           mu4e-mu-binary (executable-find "/usr/local/bin/mu"))
+     (ipython-notebook :variables
+                       ein:jupyter-default-server-command "/usr/local/bin/jupyter"
+                       ein:jupyter-server-args (list "--no-browser"))
      (auto-completion :variables auto-completion-enable-snippets-in-popup
                       t)
      (python :variables python-enable-yapf-format-on-save
@@ -59,12 +67,12 @@
           t)
      (shell :variables shell-default-shell'ansi-term
             shell-default-term-shell "/bin/zsh")
-     chenxuesong)
+     )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-additional-packages
    '(osx-dictionary chinese-fonts-setup)
    dotspacemacs-excluded-packages
-   '()
+   '(evil-unimpaired)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -82,8 +90,8 @@ before layers configuration."
    ;; is `emacs' then the `holy-mode' is enabled at startup. dotspacemacs-editing-style 'vim
    ;; If non nil output loading progess in `*Messages*' buffer.
    dotspacemacs-editing-style 'vim
-   dotspacemacs-verbose-loading
-   nil
+   dotspacemacs-verbose-loading nil
+   dotspacemacs-elpa-https nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
    ;; banner, `random' chooses a random text banner in `core/banners'
@@ -194,7 +202,8 @@ before layers configuration."
    ;; specified with an installed package.
    ;; Not used for now.
    dotspacemacs-default-package-repository
-   nil)
+   nil
+   )
   ;; User initialization goes here
   (setq configuration-layer--elpa-archives
         '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
@@ -207,6 +216,7 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+  (setq warning-minimum-level :emergency)
   (set-default-coding-systems 'utf-8)
   (setq paradox-github-token "6058a83cdf6dd9ee0db5ba4a16c6cd1201048bd7")
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -232,8 +242,8 @@ layers configuration."
 
   (with-eval-after-load 'web-mode
     ;;(setq-default
-     ;; js2-mode js2-basic-offset 2
-     ;; web-mode css-indent-offset 2 web-mode-markup-indent-offset
+    ;; js2-mode js2-basic-offset 2
+    ;; web-mode css-indent-offset 2 web-mode-markup-indent-offset
     ;;2 web-mode-css-indent-offset 2 web-mode-code-indent-offset
     ;;2 web-mode-attr-indent-offset 2)
 
@@ -303,6 +313,9 @@ layers configuration."
                       charset
                       (font-spec :family "Noto Sans Mono CJK SC"
                                  :size 14)))
+  (add-hook 'org-capture-after-finalize-hook
+            (lambda ()
+              (org-align-all-tags)))
   (setq org-capture-templates '(("t" "Tasks"
                                  entry
                                  (file+headline "~/org/work.org" "Tasks")
@@ -412,7 +425,88 @@ layers configuration."
               (add-to-list 'company-c-headers-path-user
                            "/Users/chenxuesong/Work/project/gamesdk/cocos2d-x-3.8/cocos/")
               (setq flycheck-clang-include-path (list (expand-file-name "~/Work/project/gamesdk/cocos2d-x-3.8/cocos/")
-                                                      (expand-file-name "~/Work/Android/ndk/android-ndk-r10e/platforms/android-21/arch-arm/usr/include/"))))))
+                                                      (expand-file-name "~/Work/Android/ndk/android-ndk-r10e/platforms/android-21/arch-arm/usr/include/")))))
+  ;;; Set up some common mu4e variables
+  (setq mu4e-maildir (expand-file-name "~/mail")
+        mu4e-sent-folder   "/Sent Items"
+        mu4e-refile-folder "/Archive"
+        mu4e-drafts-folder "/drafts"
+        mu4e-trash-folder "/Trash"
+        mu4e-get-mail-command "offlineimap"
+        mu4e-update-interval 300
+        mu4e-compose-signature-auto-include nil
+        mu4e-view-show-images t
+        mu4e-view-show-addresses t)
+
+  ;; (setq mu4e-account-alist
+  ;;       '(
+  ;;         ;; ("Gmail"
+  ;;         ;;  ;; Under each account, set the account-specific variables you want.
+  ;;         ;;  (mu4e-sent-messages-behavior delete)
+  ;;         ;;  (mu4e-sent-folder "/Gmail/[Gmail].Sent Mail")
+  ;;         ;;  (mu4e-drafts-folder "/Gmail/[Gmail].Drafts")
+  ;;         ;;  (user-mail-address "xxxxx@gmail.com")
+  ;;         ;;  (user-full-name "xxxxx"))
+  ;;         ;; ("Foxmail"
+  ;;         ;;  (mu4e-sent-messages-behavior sent)
+  ;;         ;;  (mu4e-sent-folder "/Foxmail/Sent Messages")
+  ;;         ;;  (mu4e-drafts-folder "/Foxmail/Drafts")
+  ;;         ;;  (user-mail-address "xxxxx@foxmail.com")
+  ;;         ;;  (user-full-name "xxxxx"))
+  ;;         ("163"
+  ;;          (mu4e-sent-messages-behavior sent)
+  ;;          (mu4e-sent-folder "/163/Sent Items")
+  ;;          (mu4e-drafts-folder "/163/drafts")
+  ;;          (user-mail-address "cqupt_chen@163.com")
+  ;;          (user-full-name "Chen XueSong"))
+  ;;         )
+  ;;       )
+
+  ;; save attachment to my desktop (this can also be a function)
+  (setq mu4e-attachment-dir "~/Downloads")
+
+  ;;; Mail directory shortcuts
+  (setq mu4e-maildir-shortcuts
+        '(("/INBOX" . ?i)
+          ("/Sent Items" . ?s)))
+  (setq mu4e-maildirs-extension-custom-list '("/INBOX" "/Advertisement" "/Junk E-mail"))
+  ;; Bookmarks
+  (setq mu4e-bookmarks
+        `(("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
+          ("date:today..now" "Today's messages" ?t)
+          ("date:7d..now" "Last 7 days" ?w)
+          ("mime:image/*" "Messages with images" ?p)
+          (,(mapconcat 'identity
+                       (mapcar
+                        (lambda (maildir)
+                          (concat "maildir:" (car maildir)))
+                        mu4e-maildir-shortcuts) " OR ")
+           "All inboxes" ?i)))
+  ;; configuration for sending mail
+  (setq user-full-name "chenxuesong")
+  (setq user-mail-address "cqupt_chen@163.com")
+  (setq mu4e-compose-signature
+        (concat
+         "Chen XueSong\n"
+         "QQ: 704179713\n"
+         "\n")
+        mu4e-compose-signature-auto-include t)
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-starttls-credentials
+        '(("smtp.163.com" 25 nil nil))
+        smtpmail-default-smtp-server "smtp.163.com"
+        smtpmail-smtp-server "smtp.163.com"
+        smtpmail-smtp-service 25
+        smtpmail-debug-info t)
+  (with-eval-after-load 'mu4e-alert
+    ;; Enable Desktop notifications
+    ;; (mu4e-alert-set-default-style 'notifications)) ; For linux
+    ;; (mu4e-alert-set-default-style 'libnotify))  ; Alternative for linux
+    (mu4e-alert-set-default-style 'notifier))   ; For Mac OSX (through the
+                                        ; terminal notifier app)
+  ;; (mu4e-alert-set-default-style 'growl))      ; Alternative for Mac OSX
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -430,15 +524,16 @@ layers configuration."
  '(geiser-active-implementations (quote (chicken)))
  '(org-export-backends (quote (ascii html icalendar latex md confluence freemind)))
  '(paradox-automatically-star t)
- '(ring-bell-function (quote ignore)
-                      t)
- '(safe-local-variable-values (quote ((docker-image-name . "chenxuesong")))))
+ '(request-backend (quote url-retrieve))
+ '(ring-bell-function (quote ignore) t)
+ '(safe-local-variable-values (quote ((docker-image-name . "chenxuesong"))))
+ '(send-mail-function (quote mailclient-send-it))
+ '(smtpmail-smtp-server "smtp.163.com")
+ '(smtpmail-smtp-service 25))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold
-                                        :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold
-                                                  :underline nil)))))
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
