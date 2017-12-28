@@ -47,6 +47,7 @@
      xkcd
      react
      fasd
+     finance
      shell-scripts
      spell-checking
      search-engine
@@ -230,6 +231,9 @@ layers configuration."
     "od" 'eww-download "ol" 'eww-back-url "or"
     'eww-forward-url "oH" 'eww-list-histories
     "ob" 'eww-add-bookmark "oB" 'eww-list-bookmarks)
+
+  (setq ledger-post-amount-alignment-column 68)
+
   (spacemacs|define-custom-layout "dockerbuild"
     :binding "d"
     :body (message "open dockerbuild dir.")(dired "/Users/chenxuesong/Work/project/dockerbuild/"))
@@ -268,9 +272,14 @@ layers configuration."
   (evil-leader/set-key "dd" 'osx-dictionary-search-pointer)
   (evil-leader/set-key "di" 'osx-dictionary-search-pointer)
   (setq powerline-default-separator 'arrow)
+  ;; add ledger babel
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((ledger . t)))
   ;; activite ditta
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((ditaa . t)))
+  ;; disable truncate lines off
+  (add-hook 'org-mode-hook 'spacemacs/toggle-truncate-lines-off)
   ;; active Org-babel languages
   (org-babel-do-load-languages 'org-babel-load-languages
                                '( ;; other Babel languages
@@ -302,8 +311,11 @@ layers configuration."
   ;;         (todo priority-down category-keep)
   ;;         (tags priority-down category-keep)
   ;;         (search category-keep))))
-  (setq org-bullets-bullet-list '("■" "◆" "▲" "▶"))
+  ;; (setq org-bullets-bullet-list '("■" "◆" "▲" "▶"))
+  (setq org-bullets-bullet-list '("☰" "☷" "☯" "✦" "☭" "✤" "➢" "✏"))
   (setq org-latex-pdf-process '("xelatex -interaction nonstopmode %f" "xelatex -interaction nonstopmode %f"))
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode
+    "g" 'org-mac-grab-link)
   ;; (require 'chinese-fonts-setup)
   ;; (setq cfs-profiles
   ;;       '("program" "org-mode" "read-book"))
@@ -373,7 +385,8 @@ layers configuration."
                               (:endgroup)
                               ("PERSONAL" . ?p)
                               ("ORG" . ?o)
-                              ("ANALYSIS" . ?a)
+                              ("ANALYSIS" . ?A)
+                              ("ANDROID" . ?a)
                               ("TRACKING" . ?t)
                               ("NINJA" . ?n)
                               ("EMACS". ?e)
@@ -436,6 +449,8 @@ layers configuration."
         mu4e-update-interval 300
         mu4e-compose-signature-auto-include nil
         mu4e-view-show-images t
+        mu4e-html2text-command 'mu4e-shr2text
+        shr-color-visible-luminance-min 80
         mu4e-view-show-addresses t)
 
   ;; (setq mu4e-account-alist

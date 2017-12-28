@@ -34,6 +34,8 @@
         emacs-lisp
         org
         wttrin
+        visual-fill-column
+        vue-mode
         (ox-confluence-export :location local)
         (ox-opml :location local)
         ))
@@ -76,15 +78,15 @@
 (defun chenxuesong/post-init-magit()
   (with-eval-after-load 'magit-popup
     (magit-define-popup-action 'magit-commit-popup
-                               ?r "Rbt post -g" 'chenxuesong-review-code-post-g)
+      ?r "Rbt post -g" 'chenxuesong-review-code-post-g)
     (magit-define-popup-action 'magit-commit-popup
-                               ?R "Rbt post -r" 'chenxuesong-review-code-post-r)
+      ?R "Rbt post -r" 'chenxuesong-review-code-post-r)
     (magit-define-popup-action 'magit-commit-popup
-                               ?o "Rbt open" 'chenxuesong-review-code-open)
+      ?o "Rbt open" 'chenxuesong-review-code-open)
     (magit-define-popup-action 'magit-commit-popup
-                               ?d "Rbt diff" 'chenxuesong-review-code-diff)
+      ?d "Rbt diff" 'chenxuesong-review-code-diff)
     (magit-define-popup-action 'magit-commit-popup
-                               ?D "Delete .Ds_Store" 'chenxuesong-delete-ds-store)
+      ?D "Delete .Ds_Store" 'chenxuesong-delete-ds-store)
     )
   )
 
@@ -177,9 +179,15 @@
       (defun chenxuesong/org-create-org-blog-file (title category tags)
         (interactive "sOrg blog file name? \nsBlog category? \nsBlog tags <space split>? ")
         (find-file (concat org-octopress-directory-org-posts "/" (format-time-string "%Y-%m-%d") "-" title ".org"))
+        (insert "#+LATEX_HEADER: \\usepackage{fontspec}\n")
+        (insert "#+LATEX_HEADER: \\setmainfont{Songti SC}\n")
+        (insert "#+STARTUP: indent\n")
+        (insert "#+STARTUP: hidestars\n")
+        (insert "#+OPTIONS: ^:nil toc:nil\n")
         (insert (concat "#+JEKYLL_CATEGORIES: " category "\n"))
         (insert (concat "#+JEKYLL_TAGS: " tags "\n"))
-        (insert "#+JEKYLL_COMMENTS: true")
+        (insert "#+JEKYLL_COMMENTS: true\n")
+        (insert "#+TITLE: ")
         )
       (evil-leader/set-key "oc" 'chenxuesong/org-create-org-blog-file)
       (evil-leader/set-key "op" 'chenxuesong/org-save-and-export)
@@ -217,6 +225,7 @@
             ("http://feeds.feedburner.com/androidcentral" android)
             ("https://www.reddit.com/r/geek/.rss" news)
             ("https://www.reddit.com/r/reactnative/.rss" dev)
+            ("http://www.androidweekly.cn/rss/" dev)
             ("http://www.36kr.com/feed" news)
             ("http://feeds.feedburner.com/nczonline/" blog)
 
@@ -421,6 +430,26 @@
 
 (defun chenxuesong/init-ox-opml ()
   (use-package ox-opml))
+
+(defun chenxuesong/init-visual-fill-column ()
+  (use-package visual-fill-column
+    :defer
+    :config
+    (progn
+      (setq visual-fill-column-width 100)
+      (setq visual-fill-column-center-text t)
+      )
+    )
+  )
+
+(defun chenxuesong/post-visual-fill-column ()
+  (with-eval-after-load 'visual-fill-column
+    (setq visual-fill-column-width 100)
+    (setq visual-fill-column-center-text t)))
+
+(defun chenxuesong/init-vue-mode ()
+  "Initialize vue mode"
+  (use-package vue-mode))
 
 ;; For each package, define a function chenxuesong/init-<package-name>
 ;;
