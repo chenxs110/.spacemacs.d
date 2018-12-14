@@ -144,7 +144,6 @@
                 nil 0 nil
                 "-group" "Emacs"
                 "-title" title
-                "-sender" "org.gnu.Emacs"
                 "-message" message
-                "-activate" "oeg.gnu.Emacs"))
+                "-activate" "org.gnu.Emacs"))
 

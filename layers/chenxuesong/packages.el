@@ -35,7 +35,6 @@
         org
         wttrin
         visual-fill-column
-        vue-mode
         (ox-confluence-export :location local)
         (ox-opml :location local)
         ))
@@ -56,6 +55,33 @@
 ;;       (add-hook 'scheme-mode-hook 'geiser-mode)
 ;;       (setq geiser-active-implementations '(racket))
 ;;       )))
+
+;; for vue
+;; (defun chenxuesong/init-lsp-vue()
+;;   (use-package lsp-vue)
+;;   )
+
+;; (defun chenxuesong/init-lsp-mode()
+;;   (use-package lsp-mode)
+;;   )
+
+;; (defun chenxuesong/init-company-lsp()
+;;   (use-package company-lsp
+;;     :ensure
+;;     :config
+;;     ;; 开启yasnippet支持
+;;     (setq company-lsp-enable-snippet t))
+;;   )
+
+;; (defun chenxuesong/post-init-company()
+;;   (setq company-minimum-prefix-length 1)
+;;   (setq company-dabbrev-downcase nil)
+;;   (setq company-idle-delay 0.5)
+;;   (setq company-idle-delay 0.5)
+;;   (add-hook 'company-mode-hook 'company-quickhelp-mode)
+;;   (add-to-list 'company-backends 'company-lsp)
+;;   )
+
 
 (defun chenxuesong/post-init-ycmd()
   ;;(set-variable 'ycmd-server-command '("python"))
@@ -336,8 +362,14 @@
   )
 
 (defun chenxuesong/post-init-web-mode ()
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+  ;; (add-hook 'web-mode-hook 'company-mode)
+  ;; (add-hook 'web-mode-hook 'lsp-vue-enable)
   (add-to-list 'auto-mode-alist '("\\.ios.js\\'" . react-mode))
   (add-to-list 'auto-mode-alist '("\\.android.js\\'" . react-mode))
+  (with-eval-after-load 'web-mode
+    (setcar company-backends-web-mode '(company-web-html :with company-yasnippet)))
   )
 
 (defun chenxuesong/init-docker ()
@@ -405,16 +437,16 @@
   ;;              'ox-html-clear-single-linebreak-for-cjk)
   (add-hook 'org-pomodoro-finished-hook
             (lambda ()
-              (notify-osx "Pomodoro completed!" "Time for a break.")))
+              (notify-osx "Pomodoro completed." "Time for a break.")))
   (add-hook 'org-pomodoro-break-finished-hook
             (lambda ()
-              (notify-osx "Pomodoro Short Break Finished" "Ready for Another?")))
+              (notify-osx "Pomodoro Short Break Finished." "Ready for Another?")))
   (add-hook 'org-pomodoro-long-break-finished-hook
             (lambda ()
-              (notify-osx "Pomodoro Long Break Finished" "Ready for Another?")))
+              (notify-osx "Pomodoro Long Break Finished." "Ready for Another?")))
   (add-hook 'org-pomodoro-killed-hook
             (lambda ()
-              (notify-osx "Pomodoro Killed" "One does not simply kill a pomodoro!")))
+              (notify-osx "Pomodoro Killed." "One does not simply kill a pomodoro.")))
   )
 
 (defun chenxuesong/post-init-dockerfile-mode ()
@@ -446,10 +478,6 @@
   (with-eval-after-load 'visual-fill-column
     (setq visual-fill-column-width 100)
     (setq visual-fill-column-center-text t)))
-
-(defun chenxuesong/init-vue-mode ()
-  "Initialize vue mode"
-  (use-package vue-mode))
 
 ;; For each package, define a function chenxuesong/init-<package-name>
 ;;

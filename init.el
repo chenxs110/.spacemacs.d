@@ -27,9 +27,9 @@
      javascript
      syntax-checking
      ;; perspectives
-     semantic
      ;; (colors :variables
      ;;         colors-enable-nyan-cat-progress-bar t)
+     semantic
      (c-c++ :variables c-c++-default-mode-for-headers'c++-mode
             :variables c-c++-enable-clang-support
             t)
@@ -210,7 +210,7 @@ before layers configuration."
         '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
           ("org-cn"   . "http://elpa.emacs-china.org/org/")
           ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
-  (set-variable 'ycmd-server-command '("python" "/Users/chenxuesong/emacs/ycmd/ycmd/"))
+  (set-variable 'ycmd-server-command '("python" "/Users/chenxuesong/emacs/ycmd/ycmd/" "--options_file=config.json"))
   )
 
 (defun dotspacemacs/user-config ()
@@ -243,7 +243,7 @@ layers configuration."
   (spacemacs|define-custom-layout "ewwxahlee"
     :binding "x"
     :body (eww-open-file "~/Work/Emacs/Document/xahemacs20150606/xah_emacs_tutorial/index.html"))
-
+  (setq dotspacemacs-line-numbers t)
   (with-eval-after-load 'web-mode
     ;;(setq-default
     ;; js2-mode js2-basic-offset 2
@@ -286,7 +286,17 @@ layers configuration."
                                  (plantuml . t)))
   (setq org-plantuml-jar-path (expand-file-name "~/org/contrib/scripts/plantuml.jar"))
   (setq org-ditaa-jar-path (expand-file-name "~/org/contrib/scripts/ditaa.jar"))
-  (setq org-agenda-files (list "~/org" "~/Work/360/Project"))
+  (setq org-agenda-files (list "~/org" "~/Work/360/AndroidProject"))
+  (setq org-agenda-text-search-extra-files (append
+                                            (directory-files (expand-file-name "~/org/archive/") "full-name" "\\.org_archive$")
+                                            (directory-files (expand-file-name "~/Work/360/AndroidProject/archive/") "full-name" "\\.org_archive$")
+                                            ))
+
+  (setq org-archive-location (concat "archive/archive-"
+                                     (format-time-string "%Y%m" (current-time))
+                                     ".org_archive::"))
+  (setq org-agenda-archives-mode t)
+  (setq org-tags-match-list-sublevels nil)
   ;; (setq org-agenda-files (list "~/org/work.org" "~/org/study.org" "~/org/home.org" "~/org/notes.org"))
   ;;open agenda in current window
   (setq org-agenda-window-setup (quote current-window))
@@ -338,7 +348,7 @@ layers configuration."
                                  "** %t %^{description} %^g\n %?")
                                 ("q" "Assessment"
                                  entry
-                                 (file+headline "~/Work/360/Project/qihoo.org" "Safety Assessment")
+                                 (file+headline "~/Work/360/AndroidProject/qihoo.org" "Safety Assessment")
                                  "** TODO %t %^{description} %^g\n %?")
                                 ("d" "Ideas"
                                  entry
