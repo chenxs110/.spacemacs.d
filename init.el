@@ -71,7 +71,8 @@
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-additional-packages
-   '(osx-dictionary chinese-fonts-setup)
+   ;; '(osx-dictionary chinese-fonts-setup vue-mode lsp-mode lsp-vue company-lsp company-quick-help)
+   '(osx-dictionary chinese-fonts-setup vue-mode)
    dotspacemacs-excluded-packages
    '(evil-unimpaired)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -326,6 +327,8 @@ layers configuration."
   (setq org-latex-pdf-process '("xelatex -interaction nonstopmode %f" "xelatex -interaction nonstopmode %f"))
   (spacemacs/set-leader-keys-for-major-mode 'org-mode
     "g" 'org-mac-grab-link)
+  ;; org clock in mode-line
+  (setq spaceline-org-clock-p t)
   ;; (require 'chinese-fonts-setup)
   ;; (setq cfs-profiles
   ;;       '("program" "org-mode" "read-book"))
@@ -540,17 +543,20 @@ layers configuration."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ahs-case-fold-search nil)
- '(ahs-default-range (quote ahs-range-whole-buffer))
- '(ahs-idle-interval 0.25)
+ '(ahs-case-fold-search nil t)
+ '(ahs-default-range (quote ahs-range-whole-buffer) t)
+ '(ahs-idle-interval 0.25 t)
  '(ahs-idle-timer 0 t)
- '(ahs-inhibit-face-list nil)
+ '(ahs-inhibit-face-list nil t)
  '(cfs--current-profile-name "program" t)
  '(geiser-active-implementations (quote (chicken)))
  '(org-export-backends (quote (ascii html icalendar latex md confluence freemind)))
+ '(package-selected-packages
+   (quote
+    (lsp-vue company-lsp lsp-mode yapfify yaml-mode xkcd wttrin ws-butler winum which-key web-mode web-beautify vue-mode volatile-highlights visual-fill-column vi-tilde-fringe uuidgen use-package toc-org tagedit swiper stickyfunc-enhance srefactor spaceline solarized-theme smeargle slime-company slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restart-emacs ranger rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-octopress org-download org-bullets open-junk-file neotree multi-term mu4e-maildirs-extension mu4e-alert move-text markdown-toc magit-gitflow lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode ledger-mode launchctl keyfreq js2-refactor js-doc insert-shebang info+ indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags geiser fuzzy flyspell-correct-helm flycheck-ycmd flycheck-pos-tip flycheck-ledger flx-ido fish-mode fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein dumb-jump docker disaster deft cython-mode company-ycmd company-web company-tern company-statistics company-shell company-c-headers company-anaconda common-lisp-snippets column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format chinese-fonts-setup bracketed-paste auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-automatically-star t)
  '(request-backend (quote url-retrieve))
- '(ring-bell-function (quote ignore) t)
+ '(ring-bell-function (quote ignore))
  '(safe-local-variable-values (quote ((docker-image-name . "chenxuesong"))))
  '(send-mail-function (quote mailclient-send-it))
  '(smtpmail-smtp-server "smtp.163.com")

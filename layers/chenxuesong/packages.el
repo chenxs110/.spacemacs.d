@@ -37,6 +37,11 @@
         visual-fill-column
         (ox-confluence-export :location local)
         (ox-opml :location local)
+        ;; vue-mode
+        ;; lsp-mode
+        ;; lsp-vue
+        ;; company-lsp
+        ;; company-quick-help
         ))
 
 ;; List of packages to exclude.
@@ -62,8 +67,13 @@
 ;;   )
 
 ;; (defun chenxuesong/init-lsp-mode()
-;;   (use-package lsp-mode)
+;;   (use-package lsp-mode :ensure)
 ;;   )
+
+;; (defun chenxuesong/init-company-quick-help()
+;;   (use-package company-quick-help :ensure)
+;;   )
+
 
 ;; (defun chenxuesong/init-company-lsp()
 ;;   (use-package company-lsp
@@ -478,6 +488,11 @@
   (with-eval-after-load 'visual-fill-column
     (setq visual-fill-column-width 100)
     (setq visual-fill-column-center-text t)))
+
+(defun vue-mode/init-vue-mode ()
+  "Initialize my package"
+  (use-package vue-mode)
+  )
 
 ;; For each package, define a function chenxuesong/init-<package-name>
 ;;
