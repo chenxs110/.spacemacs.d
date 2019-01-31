@@ -57,9 +57,9 @@
            mu4e-enable-mode-line t
            mu4e-enable-notifications t
            mu4e-mu-binary (executable-find "/usr/local/bin/mu"))
-     (ipython-notebook :variables
-                       ein:jupyter-default-server-command "/usr/local/bin/jupyter"
-                       ein:jupyter-server-args (list "--no-browser"))
+     ;; (ipython-notebook :variables
+     ;;                   ein:jupyter-default-server-command "/usr/local/bin/jupyter"
+     ;;                   ein:jupyter-server-args (list "--no-browser"))
      (auto-completion :variables auto-completion-enable-snippets-in-popup
                       t)
      (python :variables python-enable-yapf-format-on-save
@@ -373,6 +373,15 @@ layers configuration."
                                  entry
                                  (file+headline "~/org/study.org" "EMACS")
                                  "** TODO %^{description} %^g\n %?")
+                                ("f" "Ledger")
+                                ("fi" "Income" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tAssets:%^{Account|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}    %^{Amount} CNY\n\t\t\tIncome:%^{Income|工资|报销|私活|利息|房租|转账}")
+                                ("fe" "Expenses" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tExpenses:%^{Expenses|宠物|生活消费:三餐|生活消费:水果|交通:打车费|电子设备|学习|住房|服饰:|请客|转账|请客|送礼}    %^{Amount} CNY\n\t\t\tAssets:%^{Account|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}")
+                                ("fl" "Liabilities" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tExpenses:%^{Account|宠物|生活消费:三餐|生活消费:水果|交通:打车费|电子设备|学习|住房|服饰:|请客|转账|请客|送礼}    %^{Amount} CNY\n\t\t\tLiabilities:%^{LAccount|花呗|借呗|白条}")
+                                ("ft" "Transaction" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tAssets:%^{AccountIn|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}    %^{Amount} CNY\n\t\t\tAssets:%^{AccountOut|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}")
                                 ("l" "Learn"
                                  entry
                                  (file+headline "~/org/study.org" "LEARN")

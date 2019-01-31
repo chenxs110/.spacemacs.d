@@ -70,6 +70,9 @@
   (shell-command-to-string "cp -rf ~/Work/blog/images/* ~/Work/blog/images-achieve")
   (shell-command-to-string "rm -f ~/Work/blog/images/*"))
 
+(defun chenxuesong-copy-image-to-public-dir ()
+  (shell-command-to-string "cp -rf ~/Work/blog/images/* ~/Work/blog/public/images"))
+
 (defun chenxuesong-hexo-generate (args)
   (interactive "P")
   (let ((default-directory chenxueosng-blog-dir))
@@ -79,9 +82,10 @@
 (defun chenxuesong-hexo-deploy (args)
   (interactive "P")
   (let ((default-directory chenxueosng-blog-dir))
-    (chenxuesong-qiniu-upload-img (concat chenxueosng-blog-dir "qiniu.json"))
+    ;; (chenxuesong-qiniu-upload-img (concat chenxueosng-blog-dir "qiniu.json"))
+    (chenxuesong-copy-image-to-public-dir)
     (shell-command-to-string "hexo deploy --generate")
-    (chenxuesong-qiniu-achieve-image)
+    ;; (chenxuesong-qiniu-achieve-image)
     (message "hexo deploy complete.")))
 
 (defun chenxuesong-insert-qiniu-link (imagename)
