@@ -279,6 +279,12 @@
             ("https://www.sec-wiki.com/news/rss" sec)
             ("http://paper.seebug.org/rss/" sec)
             ("http://www.freebuf.com/feed" sec)
+            ("http://zhengbao.wang/atom.xml" sec)
+            ("https://www.giantbranch.cn/atom.xml" sec)
+            ("https://bestwing.me/atom.xml" sec)
+            ("https://0x48.pw/rss.xml" sec)
+            ("https://www.cesafe.com/feed" sec)
+            ("http://blog.nsfocus.net/feed/" sec)
             ("https://www.cvedetails.com/vulnerability-feed.php?vendor_id=0&product_id=0&version_id=0&orderby=3&cvssscoremin=4" sec)
             ;; ("http://www.reactnative.com/rss/" dev)
             )
@@ -429,7 +435,19 @@
   ;;              'eh-org-clean-space)
 
   ;;(run-at-time 1 10 'chenxuesong-indent-org-block-automatically)
-
+  (defun chenxuesong-read-lines (filePath)
+    "Return a list of lines of a file at filePath."
+    (with-temp-buffer
+      (insert-file-contents filePath)
+      (split-string (buffer-string) "\n" t)))
+  (defun prompt-completion-assets ()
+    (string-join (chenxuesong-read-lines "/Users/chenxuesong/.ledger/.Assets") "|"))
+  (defun prompt-completion-income ()
+    (string-join (chenxuesong-read-lines "/Users/chenxuesong/.ledger/.Income") "|"))
+  (defun prompt-completion-liabilities ()
+    (string-join (chenxuesong-read-lines "/Users/chenxuesong/.ledger/.Liabilities") "|"))
+  (defun prompt-completion-expense ()
+    (string-join (chenxuesong-read-lines "/Users/chenxuesong/.ledger/.Expense") "|"))
   (defun clear-single-linebreak-in-cjk-string (string)
     "clear single line-break between cjk characters that is usually soft line-breaks"
     (let* ((regexp "\\([\u4E00-\u9FA5]\\)\n\\([\u4E00-\u9FA5]\\)")
@@ -457,6 +475,52 @@
   (add-hook 'org-pomodoro-killed-hook
             (lambda ()
               (notify-osx "Pomodoro Killed." "One does not simply kill a pomodoro.")))
+  (setq org-capture-templates '(("t" "Tasks"
+                                 entry
+                                 (file+headline "~/org/work.org" "Tasks")
+                                 "** TODO %^{description} %^g\n %?")
+                                ("n" "Notes"
+                                 entry
+                                 (file+headline "~/org/work.org" "Notes")
+                                 "** %t %^{description} %^g\n %?")
+                                ("q" "Assessment"
+                                 entry
+                                 (file+headline "~/Work/360/AppProject/qihoo.org" "Safety Assessment")
+                                 "** TODO %t %^{description} %^g\n %?")
+                                ("d" "Ideas"
+                                 entry
+                                 (file+headline "~/org/work.org" "Ideas")
+                                 "** %t %^{description} %^g\n %?")
+                                ("i" "Inbox"
+                                 entry
+                                 (file+headline "~/org/work.org" "Inbox")
+                                 "** %t %^{description} %^g\n %?")
+                                ("h" "Home"
+                                 entry
+                                 (file+headline "~/org/home.org" "HOME EVENT")
+                                 "** TODO %^{description} %^g\n %?")
+                                ("r" "Reading"
+                                 entry
+                                 (file+headline "~/org/study.org" "READING BOOK")
+                                 "** TODO %^{description} %^g\n %?")
+                                ("e" "Emacs"
+                                 entry
+                                 (file+headline "~/org/study.org" "EMACS")
+                                 "** TODO %^{description} %^g\n %?")
+                                ("f" "Ledger")
+                                ("fi" "Income" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{Income|%(prompt-completion-income)}")
+                                ("fe" "Expenses" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Expenses|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{Account|%(prompt-completion-assets)}")
+                                ("fl" "Liabilities" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{LAccount|%(prompt-completion-liabilities)}")
+                                ("ft" "Transaction" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{AccountIn|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{AccountOut|%(prompt-completion-assets)}")
+                                ("l" "Learn"
+                                 entry
+                                 (file+headline "~/org/study.org" "LEARN")
+                                 "** TODO %^{description} %^g\n %?")))
+
   )
 
 (defun chenxuesong/post-init-dockerfile-mode ()

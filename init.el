@@ -11,6 +11,7 @@
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     windows-scripts
      ;; --------------------------------------------------------
      ;; Example of useful layers you may want to use right away
      ;; Uncomment a layer name and press C-c C-c to install it
@@ -284,19 +285,24 @@ layers configuration."
   ;; active Org-babel languages
   (org-babel-do-load-languages 'org-babel-load-languages
                                '( ;; other Babel languages
-                                 (plantuml . t)))
+                                 (plantuml . t)
+                                 (emacs-lisp . t)
+                                 (shell . t)
+                                 ))
   (setq org-plantuml-jar-path (expand-file-name "~/org/contrib/scripts/plantuml.jar"))
   (setq org-ditaa-jar-path (expand-file-name "~/org/contrib/scripts/ditaa.jar"))
-  (setq org-agenda-files (list "~/org" "~/Work/360/AndroidProject"))
+  (setq org-agenda-files (list "~/org" "~/Work/360/AppProject"))
   (setq org-agenda-text-search-extra-files (append
                                             (directory-files (expand-file-name "~/org/archive/") "full-name" "\\.org_archive$")
-                                            (directory-files (expand-file-name "~/Work/360/AndroidProject/archive/") "full-name" "\\.org_archive$")
+                                            (directory-files (expand-file-name "~/Work/360/AppProject/archive/") "full-name" "\\.org_archive$")
                                             ))
 
   (setq org-archive-location (concat "archive/archive-"
                                      (format-time-string "%Y%m" (current-time))
                                      ".org_archive::"))
   (setq org-agenda-archives-mode t)
+  ;; 折叠时不再显示「...」
+  ;; (setq org-ellipsis "▼")
   (setq org-tags-match-list-sublevels nil)
   ;; (setq org-agenda-files (list "~/org/work.org" "~/org/study.org" "~/org/home.org" "~/org/notes.org"))
   ;;open agenda in current window
@@ -341,51 +347,6 @@ layers configuration."
   (add-hook 'org-capture-after-finalize-hook
             (lambda ()
               (org-align-all-tags)))
-  (setq org-capture-templates '(("t" "Tasks"
-                                 entry
-                                 (file+headline "~/org/work.org" "Tasks")
-                                 "** TODO %^{description} %^g\n %?")
-                                ("n" "Notes"
-                                 entry
-                                 (file+headline "~/org/work.org" "Notes")
-                                 "** %t %^{description} %^g\n %?")
-                                ("q" "Assessment"
-                                 entry
-                                 (file+headline "~/Work/360/AndroidProject/qihoo.org" "Safety Assessment")
-                                 "** TODO %t %^{description} %^g\n %?")
-                                ("d" "Ideas"
-                                 entry
-                                 (file+headline "~/org/work.org" "Ideas")
-                                 "** %t %^{description} %^g\n %?")
-                                ("i" "Inbox"
-                                 entry
-                                 (file+headline "~/org/work.org" "Inbox")
-                                 "** %t %^{description} %^g\n %?")
-                                ("h" "Home"
-                                 entry
-                                 (file+headline "~/org/home.org" "HOME EVENT")
-                                 "** TODO %^{description} %^g\n %?")
-                                ("r" "Reading"
-                                 entry
-                                 (file+headline "~/org/study.org" "READING BOOK")
-                                 "** TODO %^{description} %^g\n %?")
-                                ("e" "Emacs"
-                                 entry
-                                 (file+headline "~/org/study.org" "EMACS")
-                                 "** TODO %^{description} %^g\n %?")
-                                ("f" "Ledger")
-                                ("fi" "Income" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tAssets:%^{Account|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}    %^{Amount} CNY\n\t\t\tIncome:%^{Income|工资|报销|私活|利息|房租|转账}")
-                                ("fe" "Expenses" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tExpenses:%^{Expenses|宠物|生活消费:三餐|生活消费:水果|交通:打车费|电子设备|学习|住房|服饰:|请客|转账|请客|送礼}    %^{Amount} CNY\n\t\t\tAssets:%^{Account|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}")
-                                ("fl" "Liabilities" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tExpenses:%^{Account|宠物|生活消费:三餐|生活消费:水果|交通:打车费|电子设备|学习|住房|服饰:|请客|转账|请客|送礼}    %^{Amount} CNY\n\t\t\tLiabilities:%^{LAccount|花呗|借呗|白条}")
-                                ("ft" "Transaction" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\tAssets:%^{AccountIn|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}    %^{Amount} CNY\n\t\t\tAssets:%^{AccountOut|招商银行|支付宝|微信钱包|现金|理财账户:朝朝盈|理财账户:微众银行}")
-                                ("l" "Learn"
-                                 entry
-                                 (file+headline "~/org/study.org" "LEARN")
-                                 "** TODO %^{description} %^g\n %?")))
 
   (setq org-agenda-custom-commands
         '(
