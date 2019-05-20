@@ -287,6 +287,7 @@
             ("http://blog.nsfocus.net/feed/" sec)
             ("https://www.cvedetails.com/vulnerability-feed.php?vendor_id=0&product_id=0&version_id=0&orderby=3&cvssscoremin=4" sec)
             ;; ("http://www.reactnative.com/rss/" dev)
+            ("http://gv7.me/atom.xml" sec)
             )
           )
 

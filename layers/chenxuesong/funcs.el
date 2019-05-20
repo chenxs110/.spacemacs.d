@@ -151,3 +151,7 @@
                 "-message" message
                 "-activate" "org.gnu.Emacs"))
 
+(defun chenxuesong-ledger-insert-liabilities ()
+  (interactive)
+  (org-capture 0 "fl"))
+
