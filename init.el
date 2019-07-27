@@ -55,6 +55,8 @@
                      ispell-dictionary "american"
                      spell-checking-enable-by-default nil)
      search-engine
+     lsp
+     dap
      chenxuesong
      (mu4e :variables
            mu4e-installation-path "/usr/local/Cellar/mu/mu4e"
@@ -66,17 +68,24 @@
      ;;                   ein:jupyter-server-args (list "--no-browser"))
      (auto-completion :variables auto-completion-enable-snippets-in-popup
                       t)
-     (python :variables python-enable-yapf-format-on-save
-             t python-test-runner 'pytest)
-     (git :variables git-magit-status-fullscreen
-          t)
-     (shell :variables shell-default-shell'ansi-term
+     (python :variables
+             python-pipenv-activate t
+             python-format-on-save t
+             python-sort-imports-on-save t
+             python-test-runner 'pytest
+             python-backend 'lsp
+             python-lsp-server 'pyls
+             python-formatter 'yapf)
+     (git :variables
+          git-magit-status-fullscreen t)
+     (shell :variables
+            shell-default-shell 'ansi-term
             shell-default-term-shell "/bin/zsh")
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-additional-packages
    ;; '(osx-dictionary chinese-fonts-setup vue-mode lsp-mode lsp-vue company-lsp company-quick-help)
-   '(osx-dictionary chinese-fonts-setup vue-mode)
+   '(osx-dictionary vue-mode)
    dotspacemacs-excluded-packages
    '(evil-unimpaired)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -122,6 +131,7 @@ before layers configuration."
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state
    t
+   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    ;; "Noto Sans Mono CJK SC"
@@ -526,7 +536,7 @@ layers configuration."
  '(org-export-backends (quote (ascii html icalendar latex md confluence freemind)))
  '(package-selected-packages
    (quote
-    (lsp-vue company-lsp lsp-mode yapfify yaml-mode xkcd wttrin ws-butler winum which-key web-mode web-beautify vue-mode volatile-highlights visual-fill-column vi-tilde-fringe uuidgen use-package toc-org tagedit swiper stickyfunc-enhance srefactor spaceline solarized-theme smeargle slime-company slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restart-emacs ranger rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-octopress org-download org-bullets open-junk-file neotree multi-term mu4e-maildirs-extension mu4e-alert move-text markdown-toc magit-gitflow lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode ledger-mode launchctl keyfreq js2-refactor js-doc insert-shebang info+ indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags geiser fuzzy flyspell-correct-helm flycheck-ycmd flycheck-pos-tip flycheck-ledger flx-ido fish-mode fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein dumb-jump docker disaster deft cython-mode company-ycmd company-web company-tern company-statistics company-shell company-c-headers company-anaconda common-lisp-snippets column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format chinese-fonts-setup bracketed-paste auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (xterm-color ivy slime org-category-capture ctable orglue epic ht alert log4e gntp markdown-mode macrostep skewer-mode multiple-cursors js2-mode hydra htmlize parent-mode projectile haml-mode gitignore-mode flyspell-correct pos-tip flycheck flx highlight magit magit-popup git-commit async with-editor dash smartparens iedit anzu evil goto-chg simple-httpd ace-jump-mode noflet powerline popwin elfeed json-mode tablist docker-tramp json-snatcher json-reformat diminish ycmd pkg-info request-deferred request deferred epl web-completion-data dash-functional tern company bind-map bind-key yasnippet packed anaconda-mode pythonic f s helm avy helm-core auto-complete popup org-mime lsp-vue company-lsp lsp-mode yapfify yaml-mode xkcd wttrin ws-butler winum which-key web-mode web-beautify vue-mode volatile-highlights visual-fill-column vi-tilde-fringe uuidgen use-package toc-org tagedit swiper stickyfunc-enhance srefactor spaceline solarized-theme smeargle slime-company slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restart-emacs ranger rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-octopress org-download org-bullets open-junk-file neotree multi-term mu4e-maildirs-extension mu4e-alert move-text markdown-toc magit-gitflow lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode ledger-mode launchctl keyfreq js2-refactor js-doc insert-shebang info+ indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags geiser fuzzy flyspell-correct-helm flycheck-ycmd flycheck-pos-tip flycheck-ledger flx-ido fish-mode fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein dumb-jump docker disaster deft cython-mode company-ycmd company-web company-tern company-statistics company-shell company-c-headers company-anaconda common-lisp-snippets column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format chinese-fonts-setup bracketed-paste auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-automatically-star t)
  '(request-backend (quote url-retrieve))
  '(ring-bell-function (quote ignore))

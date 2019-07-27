@@ -374,7 +374,7 @@
 
     (defadvice elfeed-show-yank (after elfeed-show-yank-to-kill-ring activate compile)
       "Insert the yanked text from x-selection to kill ring"
-      (kill-new (x-get-selection)))
+      (kill-new (gui-get-selection)))
 
     (ad-activate 'elfeed-show-yank)
     )
@@ -547,6 +547,7 @@
   (use-package sdcv
     :init
     (progn
+      (evil-leader/set-key "ot" 'sdcv-search-pointer+)
       (setq sdcv-say-word-p nil)               ;say word after translation
 
       (setq sdcv-dictionary-data-dir "/Users/chenxuesong/dict/stardict") ;setup directory of stardict dictionary
