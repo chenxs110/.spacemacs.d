@@ -37,6 +37,8 @@
         visual-fill-column
         (ox-confluence-export :location local)
         (ox-opml :location local)
+        (posframe :location local)
+        (sdcv :location local)
         ;; vue-mode
         ;; lsp-mode
         ;; lsp-vue
@@ -510,13 +512,13 @@
                                  "** TODO %^{description} %^g\n %?")
                                 ("f" "Ledger")
                                 ("fi" "Income" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{Income|%(prompt-completion-income)}")
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{Income|%(prompt-completion-income)}%?")
                                 ("fe" "Expenses" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Expenses|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{Account|%(prompt-completion-assets)}")
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Expenses|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{Account|%(prompt-completion-assets)}%?")
                                 ("fl" "Liabilities" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{LAccount|%(prompt-completion-liabilities)}")
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{LAccount|%(prompt-completion-liabilities)}%?")
                                 ("ft" "Transaction" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
-                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{AccountIn|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{AccountOut|%(prompt-completion-assets)}")
+                                 "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{AccountIn|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{AccountOut|%(prompt-completion-assets)}%?")
                                 ("l" "Learn"
                                  entry
                                  (file+headline "~/org/study.org" "LEARN")
@@ -537,6 +539,30 @@
 
 (defun chenxuesong/init-ox-opml ()
   (use-package ox-opml))
+
+(defun chenxuesong/init-posframe ()
+  (use-package posframe))
+
+(defun chenxuesong/init-sdcv ()
+  (use-package sdcv
+    :init
+    (progn
+      (setq sdcv-say-word-p nil)               ;say word after translation
+
+      (setq sdcv-dictionary-data-dir "/Users/chenxuesong/dict/stardict") ;setup directory of stardict dictionary
+
+      (setq sdcv-dictionary-simple-list    ;setup dictionary list for simple search
+            '("懒虫简明英汉词典"
+              "懒虫简明汉英词典"
+              "KDic11万英汉词典"))
+
+      (setq sdcv-dictionary-complete-list     ;setup dictionary list for complete search
+            '(
+              "懒虫简明英汉词典"
+              "懒虫简明汉英词典"
+              "牛津英汉双解美化版"
+              ))
+     )))
 
 (defun chenxuesong/init-visual-fill-column ()
   (use-package visual-fill-column

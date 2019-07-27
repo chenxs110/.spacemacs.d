@@ -50,7 +50,10 @@
      fasd
      finance
      shell-scripts
-     spell-checking
+     (spell-checking :variables
+                     ispell-program-name "aspell"
+                     ispell-dictionary "american"
+                     spell-checking-enable-by-default nil)
      search-engine
      chenxuesong
      (mu4e :variables
@@ -343,7 +346,7 @@ layers configuration."
     (set-fontset-font (frame-parameter nil 'font)
                       charset
                       (font-spec :family "Noto Sans Mono CJK SC"
-                                 :size 14)))
+                                 :size 12)))
   (add-hook 'org-capture-after-finalize-hook
             (lambda ()
               (org-align-all-tags)))

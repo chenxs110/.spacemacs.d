@@ -155,3 +155,7 @@
   (interactive)
   (org-capture 0 "fl"))
 
+(defun chenxuesong-ledger-insert-expense ()
+  (interactive)
+  (org-capture 0 "fe"))
+
