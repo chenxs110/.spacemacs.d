@@ -35,10 +35,14 @@
         org
         wttrin
         visual-fill-column
+        load-theme-buffer-local
         (ox-confluence-export :location local)
         (ox-opml :location local)
         (posframe :location local)
         (sdcv :location local)
+        (insert-translated-name :location local)
+        (cnfonts :location local)
+        (company-english-helper :location local)
         ;; vue-mode
         ;; lsp-mode
         ;; lsp-vue
@@ -222,6 +226,7 @@
         (insert "#+STARTUP: indent\n")
         (insert "#+STARTUP: hidestars\n")
         (insert "#+OPTIONS: ^:nil toc:nil\n")
+        (insert "#+LANGUAGE: zh-CN\n")
         (insert (concat "#+JEKYLL_CATEGORIES: " category "\n"))
         (insert (concat "#+JEKYLL_TAGS: " tags "\n"))
         (insert "#+JEKYLL_COMMENTS: true\n")
@@ -290,6 +295,8 @@
             ("https://www.cvedetails.com/vulnerability-feed.php?vendor_id=0&product_id=0&version_id=0&orderby=3&cvssscoremin=4" sec)
             ;; ("http://www.reactnative.com/rss/" dev)
             ("http://gv7.me/atom.xml" sec)
+            ("https://blog.quarkslab.com/feeds/all.rss.xml" sec)
+            ("http://gityuan.com/feed.xml" android)
             )
           )
 
@@ -511,13 +518,13 @@
                                  (file+headline "~/org/study.org" "EMACS")
                                  "** TODO %^{description} %^g\n %?")
                                 ("f" "Ledger")
-                                ("fi" "Income" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                ("fi" "Income" plain (file (lambda () (format "~/org/%s-finance.org" (format-time-string "%Y"))))
                                  "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{Income|%(prompt-completion-income)}%?")
-                                ("fe" "Expenses" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                ("fe" "Expenses" plain (file (lambda () (format "~/org/%s-finance.org" (format-time-string "%Y"))))
                                  "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Expenses|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{Account|%(prompt-completion-assets)}%?")
-                                ("fl" "Liabilities" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                ("fl" "Liabilities" plain (file (lambda () (format "~/org/%s-finance.org" (format-time-string "%Y"))))
                                  "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{Account|%(prompt-completion-expense)}    %^{Amount} CNY\n\t\t\t%^{LAccount|%(prompt-completion-liabilities)}%?")
-                                ("ft" "Transaction" plain (file (format "~/org/%s-finance.ledger" (format-time-string "%Y")))
+                                ("ft" "Transaction" plain (file (lambda () (format "~/org/%s-finance.org" (format-time-string "%Y"))))
                                  "\n\t%(org-read-date) * %^{Payee}\n\t\t\t%^{AccountIn|%(prompt-completion-assets)}    %^{Amount} CNY\n\t\t\t%^{AccountOut|%(prompt-completion-assets)}%?")
                                 ("l" "Learn"
                                  entry
@@ -540,6 +547,22 @@
 (defun chenxuesong/init-ox-opml ()
   (use-package ox-opml))
 
+;; (defun chenxuesong/init-cnfonts ()
+;;   (use-package cnfonts))
+
+(defun chenxuesong/init-company-english-helper ()
+  (use-package company-english-helper))
+
+(defun chenxuesong/init-insert-translated-name ()
+  (use-package insert-translated-name
+    :init
+    (progn
+      (evil-leader/set-key "ot" 'insert-translated-name-insert)
+      (setq insert-translated-name-translate-engine "youdao")
+      )
+    )
+  )
+
 (defun chenxuesong/init-posframe ()
   (use-package posframe))
 
@@ -547,8 +570,8 @@
   (use-package sdcv
     :init
     (progn
-      (evil-leader/set-key "ot" 'sdcv-search-pointer+)
-      (setq sdcv-say-word-p nil)               ;say word after translation
+      (evil-leader/set-key "ow" 'sdcv-search-pointer+)
+      (setq sdcv-say-word-p t)               ;say word after translation
 
       (setq sdcv-dictionary-data-dir "/Users/chenxuesong/dict/stardict") ;setup directory of stardict dictionary
 

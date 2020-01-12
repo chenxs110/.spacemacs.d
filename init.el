@@ -10,7 +10,7 @@
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(
+   '(nginx
      windows-scripts
      ;; --------------------------------------------------------
      ;; Example of useful layers you may want to use right away
@@ -30,6 +30,7 @@
      ;; perspectives
      ;; (colors :variables
      ;;         colors-enable-nyan-cat-progress-bar t)
+     windows-scripts
      semantic
      (c-c++ :variables c-c++-default-mode-for-headers'c++-mode
             :variables c-c++-enable-clang-support
@@ -69,7 +70,7 @@
      (auto-completion :variables auto-completion-enable-snippets-in-popup
                       t)
      (python :variables
-             python-pipenv-activate t
+             ;;python-pipenv-activate t
              python-format-on-save t
              python-sort-imports-on-save t
              python-test-runner 'pytest
@@ -225,7 +226,7 @@ before layers configuration."
         '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
           ("org-cn"   . "http://elpa.emacs-china.org/org/")
           ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
-  (set-variable 'ycmd-server-command '("python" "/Users/chenxuesong/emacs/ycmd/ycmd/" "--options_file=config.json"))
+  (set-variable 'ycmd-server-command '("python" "/Users/chenxuesong/emacs/ycmd/ycmd/" "--options_file=/Users/chenxuesong/emacs/ycmd/ycmd/config.json"))
   )
 
 (defun dotspacemacs/user-config ()
@@ -348,18 +349,28 @@ layers configuration."
     "g" 'org-mac-grab-link)
   ;; org clock in mode-line
   (setq spaceline-org-clock-p t)
-  ;; (require 'chinese-fonts-setup)
-  ;; (setq cfs-profiles
-  ;;       '("program" "org-mode" "read-book"))
-  ;; Chinese Font
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font)
-                      charset
-                      (font-spec :family "Noto Sans Mono CJK SC"
-                                 :size 12)))
+  ;; (set-face-attribute
+  ;;  'default nil
+  ;;  :font (font-spec :name "-*-Noto Sans Mono CJK SC-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1"
+  ;;                   :weight 'normal
+  ;;                   :slant 'normal
+  ;;                   :size 12.5))
+  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
+  ;;   (set-fontset-font
+  ;;    (frame-parameter nil 'font)
+  ;;    charset
+  ;;    (font-spec :name "-*-Noto Sans Mono CJK SC-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1"
+  ;;               :weight 'normal
+  ;;               :slant 'normal
+  ;;               :size 12.5)))
+
+
+
   (add-hook 'org-capture-after-finalize-hook
             (lambda ()
               (org-align-all-tags)))
+
+  (add-to-list 'org-modules 'org-tempo)
 
   (setq org-agenda-custom-commands
         '(
@@ -551,3 +562,39 @@ layers configuration."
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ahs-case-fold-search nil)
+ '(ahs-default-range (quote ahs-range-whole-buffer))
+ '(ahs-idle-interval 0.25)
+ '(ahs-idle-timer 0 t)
+ '(ahs-inhibit-face-list nil)
+ '(cfs--current-profile-name "program" t)
+ '(geiser-active-implementations (quote (chicken)))
+ '(org-export-backends (quote (ascii html icalendar latex md confluence freemind)))
+ '(package-selected-packages
+   (quote
+    (load-theme-buffer-local xterm-color ivy slime org-category-capture ctable orglue epic ht alert log4e gntp markdown-mode macrostep skewer-mode multiple-cursors js2-mode hydra htmlize parent-mode projectile haml-mode gitignore-mode flyspell-correct pos-tip flycheck flx highlight magit magit-popup git-commit async with-editor dash smartparens iedit anzu evil goto-chg simple-httpd ace-jump-mode noflet powerline popwin elfeed json-mode tablist docker-tramp json-snatcher json-reformat diminish ycmd pkg-info request-deferred request deferred epl web-completion-data dash-functional tern company bind-map bind-key yasnippet packed anaconda-mode pythonic f s helm avy helm-core auto-complete popup org-mime lsp-vue company-lsp lsp-mode yapfify yaml-mode xkcd wttrin ws-butler winum which-key web-mode web-beautify vue-mode volatile-highlights visual-fill-column vi-tilde-fringe uuidgen use-package toc-org tagedit swiper stickyfunc-enhance srefactor spaceline solarized-theme smeargle slime-company slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restart-emacs ranger rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements persp-mode pcre2el pbcopy paradox osx-trash osx-dictionary orgit org-projectile org-present org-pomodoro org-octopress org-download org-bullets open-junk-file neotree multi-term mu4e-maildirs-extension mu4e-alert move-text markdown-toc magit-gitflow lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode ledger-mode launchctl keyfreq js2-refactor js-doc insert-shebang info+ indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md ggtags geiser fuzzy flyspell-correct-helm flycheck-ycmd flycheck-pos-tip flycheck-ledger flx-ido fish-mode fill-column-indicator fasd fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help engine-mode emmet-mode elisp-slime-nav elfeed-web elfeed-org elfeed-goodies ein dumb-jump docker disaster deft cython-mode company-ycmd company-web company-tern company-statistics company-shell company-c-headers company-anaconda common-lisp-snippets column-enforce-mode coffee-mode cmake-mode clean-aindent-mode clang-format chinese-fonts-setup bracketed-paste auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(paradox-automatically-star t)
+ '(request-backend (quote url-retrieve))
+ '(ring-bell-function (quote ignore))
+ '(safe-local-variable-values (quote ((docker-image-name . "chenxuesong"))))
+ '(send-mail-function (quote mailclient-send-it))
+ '(smtpmail-smtp-server "smtp.163.com")
+ '(smtpmail-smtp-service 25))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+)
